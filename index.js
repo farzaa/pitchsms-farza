@@ -22,12 +22,6 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
-app.post("/message", function (request, response) {
-  let zip = request.body;
-  var msg = createMsg(zip);
-  response.send(msg);
-});
-
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
@@ -38,3 +32,12 @@ app.post('/sms', function(request, response) {
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
+// TEST CASES
+// let zip = '91108';
+// let msg = createMsg(zip);
+// console.log(zip);
+// console.log(msg);
+// zip = '82642'
+// msg = createMsg(zip);
+// console.log(zip);
+// console.log(msg);
