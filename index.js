@@ -24,13 +24,8 @@ app.listen(app.get('port'), function() {
 });
 
 app.post('/sms', function(request, response) {
-
   var twiml = new twilio.TwimlResponse();
   twiml.message('The Robots are coming! Head for the hills!');
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
-
 });
-
-
-
