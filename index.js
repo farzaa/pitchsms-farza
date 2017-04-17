@@ -85,9 +85,9 @@ app.post('/sms', function(req, res) {
   const twiml = new twilio.TwimlResponse();
   if(req.body.Body != null) {
     var zip = req.body.Body;
-    console.log(zip.toString());
     var text = msg(zip.toString());
     twiml.message(text);
+    console.log(text);
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
   }
