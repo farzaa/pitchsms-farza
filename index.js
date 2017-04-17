@@ -4,14 +4,15 @@ var app = express();
 
 var createMsg = require('./createMsgFromZip.js');
 
-var accountSid = 'ACf9c87a70f6df3afa949cd02fab0d2b5f'; // Your Account SID from www.twilio.com/console
-var authToken = '46f346035b4b588e0bbb6c20be3ca1de';   // Your Auth Token from www.twilio.com/console
+var accountSid = 'AC87b63e9e453fc85755fa9a7271117763'; // Your Account SID from www.twilio.com/console
+var authToken = '510cd92cc4d94598f4f2ded16b1f282f';   // Your Auth Token from www.twilio.com/console
 
 var twilio = require('twilio');
 var client = new twilio.RestClient(accountSid, authToken);
 
 app.set('port', (process.env.PORT || 5000));
 
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/public'));
 
 // views is directory for all template files
@@ -27,7 +28,7 @@ app.listen(app.get('port'), function() {
 });
 
 app.post('/sms', function(request, response) {
-  var zip = request.body;
+  var zip = request.body.Body;
   var msg = createMsg(zip);
   var twiml = new twilio.TwimlResponse();
   twiml.message(msg);
