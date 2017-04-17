@@ -26,69 +26,47 @@ var createMsg =  function retrieveSchoolList(zipKey) {
   }
 
   // That zip code couldn't be found from our master list.
-  if(lat == null || lon == null) {
-    callback(schoolList)
-    return;
+  if(lat == null || lon == null)
+    return toTwilioText([])
+
+  console.log(lat);
+  console.log(lon);
+
+  var COUNTER_MULTIPLE = 1;
+  var RADIUS_BASE = 16100;
+  var radius = RADIUS_BASE;
+
+  while(schoolList.length < 1 || COUNTER_MULTIPLE < 5) {
+    // Cycle through list of schools
+    radius = RADIUS_BASE * COUNTER_MULTIPLE;
+
+    for(var i = 0; i < schools.length; i++) {
+
+      if(schoolList.length >= 5)
+        break;
+
+      // Callback when we have exhausted our list.
+      if(i == schools.length - 1)
+        break;
+      var obj = schools[i];
+      var addr = obj.Address;
+      var inst = obj.Institution;
+      var schoolLat = obj.Latitude;
+      var schoolLon = obj.Longitude;
+
+      // Lets check if this school is in the radius of that lat/lon found above from the zipcode.
+      var isInCircle = geolib.isPointInCircle({latitude: schoolLat, longitude: schoolLon},
+                                              {latitude: lat, longitude: lon},
+                                              radius
+      );
+      // If its in the circle, lets add it to our list.
+      if(isInCircle){
+        schoolList.push(inst)
+      }
+    }
+    COUNTER_MULTIPLE++;
   }
-
-  findSchoolsInRadius(lat, lon, 16100, function(list) {
-
-    // Lets return our final list as long as we have one school to show for.
-    if(list.length >= 1) {
-      callback(list);
-      return;
-    }
-
-    // If we stil haven't found a school in the area, lets expand our search.
-    if(list.length == 0) {
-      findSchoolsInRadius(lat, lon, 32000, function(listTwo) {
-        if(listTwo.length >= 1) {
-          callback(listTwo);
-          return;
-        }
-        
-        // Nothing found in the area. Just callback empty list.
-        else {
-          callback(listTwo);
-          return;
-        }
-      });
-    }
-  });
-}
-
-function findSchoolsInRadius(lat, lon, radius, callback) {
-
-  var schoolList = [];
-
-  // Cycle through list of schools
-  for(var i = 0; i < schools.length; i++) {
-
-    // Callback when we have exhausted our list.
-    if(i == schools.length - 1)
-      return toTwilioText(schoolList);
-
-    var obj = schools[i];
-    var addr = obj.Address;
-    var inst = obj.Institution;
-    var schoolLat = obj.Latitude;
-    var schoolLon = obj.Longitude;
-
-    // Lets check if this school is in the radius of that lat/lon found above from the zipcode.
-    var isInCircle = geolib.isPointInCircle({latitude: schoolLat, longitude: schoolLon},
-                                            {latitude: lat, longitude: lon},
-                                            radius
-    );
-
-    // If its in the circle, lets add it to our list.
-    if(isInCircle)
-      schoolList.push(inst)
-
-    // If our school list has 5 elements, that is more than enough. Callback.
-    if(schoolList.length == 5) { 
-      return toTwilioText(schoolList);
-    }
-  }
+  return toTwilioText(schoolList);
 }
 
 module.exports = createMsg;
