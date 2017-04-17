@@ -1,8 +1,15 @@
 var schools = require('./converted.json');
 var zipcodes = require('./zipcode-locations.json');
 var geolib = require('geolib')
+var toTwilioText = require('./createTwilioText.js');
 
-var list =  function retrieveSchoolList(zipKey, callback) {
+
+// // Export variable when we reach our callback conditon.
+// var list = retrieveSchoolList('92602', function(list) {
+//   console.log(list);
+// });
+
+var createMsg =  function retrieveSchoolList(zipKey) {
   var lat = null;
   var lon = null;
   var schoolList = [];
@@ -50,7 +57,6 @@ var list =  function retrieveSchoolList(zipKey, callback) {
   });
 }
 
-
 function findSchoolsInRadius(lat, lon, radius, callback) {
 
   var schoolList = [];
@@ -59,10 +65,8 @@ function findSchoolsInRadius(lat, lon, radius, callback) {
   for(var i = 0; i < schools.length; i++) {
 
     // Callback when we have exhausted our list.
-    if(i == schools.length - 1) {
-      callback(schoolList);
-      return;
-    }
+    if(i == schools.length - 1)
+      return toTwilioText(schoolList);
 
     var obj = schools[i];
     var addr = obj.Address;
@@ -82,11 +86,9 @@ function findSchoolsInRadius(lat, lon, radius, callback) {
 
     // If our school list has 5 elements, that is more than enough. Callback.
     if(schoolList.length == 5) { 
-      callback(schoolList);
-      return;
+      return toTwilioText(schoolList);
     }
-
   }
 }
 
-module.exports = list;
+module.exports = createMsg;
