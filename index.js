@@ -71,10 +71,12 @@ var http = require('http');
 var express = require('express');
 var twilio = require('twilio');
 var msg = require('./createMsgFromZip.js');
+const bodyParser = require('body-parser');
 
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
+app.use(bodyParser());
 
 console.log(msg('33028'));
 
