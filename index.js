@@ -1,5 +1,8 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
+
+var createMsg = require('./createMsgFromZip.js');
 
 var accountSid = 'ACf9c87a70f6df3afa949cd02fab0d2b5f'; // Your Account SID from www.twilio.com/console
 var authToken = '46f346035b4b588e0bbb6c20be3ca1de';   // Your Auth Token from www.twilio.com/console
@@ -17,6 +20,12 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
   response.render('pages/index');
+});
+
+app.post("/message", function (request, response) {
+  let zip = request.body;
+  var msg = createMsg(zip);
+  response.send(msg);
 });
 
 app.listen(app.get('port'), function() {
