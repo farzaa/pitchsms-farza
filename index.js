@@ -70,16 +70,22 @@
 var http = require('http');
 var express = require('express');
 var twilio = require('twilio');
+var msg = require('./createMsgFromZip.js');
 
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
+console.log(msg('33028'));
+
 app.post('/sms', function(req, res) {
   const twiml = new twilio.TwimlResponse();
-  twiml.message('The Robots are coming! Head for the hills!');
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
+  if(req.Body != null) {
+    var text = msg(req.Body);
+    twiml.message(text);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+  }
 });
 
 app.listen(app.get('port'), function() {
