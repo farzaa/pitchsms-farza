@@ -1,5 +1,6 @@
 var schools = require('./converted.json');
 var zipcodes = require('./zipcode-locations.json');
+var geolib = require('geolib')
 
 retreiveLatLon('33028');
 
@@ -15,24 +16,42 @@ function retreiveSchools(zipCode) {
   }
 }
 
-function retreiveLatLon(zipCode) {
+function retreiveLatLon(zipKey) {
 
+  var lat = null;
+  var lon = null;
+
+  // Check if the user input zip matches from the list of zips we have.
+  for(var zip in zipcodes) {
+    // We found a match! Extract the lat/lon now.
+    if(zip == zipKey) {
+      lat = zipcodes[zip][0]
+      lon = zipcodes[zip][1]
+      break;
+    }
+  }
+
+  // NOTE: There may some issues with node's async nature here if the above search is slow!
+  console.log(lat);
+  console.log(lon);
+
+  // Cycle through list of schools
   for(var i = 0; i < schools.length; i++) {
     var obj = schools[i];
     var addr = obj.Address;
-    var zip = addr.match('\s{1}[0-9]{5}');
-    console.log(zip);
+    var schoolLat = obj.Latitude;
+    var schoolLon = obj.Longitude;
 
-    //console.log(zipcodes[zip]);
+    // Lets check if this school is in the radius of that lat/lon found above from the zipcode.
+    var isInCircle = geolib.isPointInCircle({latitude: schoolLat, longitude: schoolLon},
+                                            {latitude: lat, longitude: lon},
+                                            10000
+    );
 
-    // for(var zip in zipcodes) {
-    //   var zip = zipcodes[zip];
-    //   addr.match('\s{1}[0-9]{5}');
-    // }
-
-    if(zipCode == zip) {
-
-    } 
+    if(isInCircle){
+      console.log(obj.Institution)
+      console.log(addr);
+    }
 
   }
 }
