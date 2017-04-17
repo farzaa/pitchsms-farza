@@ -2,24 +2,17 @@ var schools = require('./converted.json');
 var zipcodes = require('./zipcode-locations.json');
 var geolib = require('geolib')
 
-retreiveLatLon('33028');
+// Callback
+retrieveSchoolList('33028', function(list) {
+  console.log(list);
 
-// Give this fucntion a zip code and it will return a list of schools in the vicinity.
-function retreiveSchools(zipCode) {
-  for(var i = 0; i < schools.length; i++) {
-    var obj = schools[i];
-    var lat = obj.Latitude;
-    var lon = obj.Longitude;
+});
 
-    console.log(obj.Institution);
 
-  }
-}
-
-function retreiveLatLon(zipKey) {
-
+function retrieveSchoolList(zipKey, callback) {
   var lat = null;
   var lon = null;
+  var schoolList = [];
 
   // Check if the user input zip matches from the list of zips we have.
   for(var zip in zipcodes) {
@@ -34,11 +27,16 @@ function retreiveLatLon(zipKey) {
   // NOTE: There may some issues with node's async nature here if the above search is slow!
   console.log(lat);
   console.log(lon);
-
   // Cycle through list of schools
   for(var i = 0; i < schools.length; i++) {
+
+    // Callback when we have exhausted our list.
+    if(i == schools.length -1)
+      callback(schoolList);
+
     var obj = schools[i];
     var addr = obj.Address;
+    var inst = obj.Institution;
     var schoolLat = obj.Latitude;
     var schoolLon = obj.Longitude;
 
@@ -48,9 +46,9 @@ function retreiveLatLon(zipKey) {
                                             10000
     );
 
+    // If its in the circle, lets add it to our list.
     if(isInCircle){
-      console.log(obj.Institution)
-      console.log(addr);
+      schoolList.push(inst)
     }
 
   }
