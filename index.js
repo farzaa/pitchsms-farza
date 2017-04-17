@@ -1,22 +1,22 @@
-<<<<<<< HEAD
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var list = require('./parse.js');
 
-var schools = list('67846', function(list) {
-  console.log(list);
-});
+// var express = require('express');
+// var bodyParser = require('body-parser');
+// var app = express();
+// var list = require('./parse.js');
+
+// var schools = list('67846', function(list) {
+//   console.log(list);
+// });
 
 
-var createMsg = require('./createMsgFromZip.js');
-=======
+//var createMsg = require('./createMsgFromZip.js');
+
 // var express = require('express');
 // var bodyParser = require('body-parser');
 // var app = express();
 //
 // var createMsg = require('./createMsgFromZip.js');
->>>>>>> 4a541803ae3c1237e6d4d92b23c71ac3981d98d8
+
 
 // var accountSid = 'AC87b63e9e453fc85755fa9a7271117763'; // Your Account SID from www.twilio.com/console
 // var authToken = '510cd92cc4d94598f4f2ded16b1f282f';   // Your Auth Token from www.twilio.com/console

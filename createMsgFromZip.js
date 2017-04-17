@@ -69,4 +69,5 @@ var createMsg =  function retrieveSchoolList(zipKey) {
   return toTwilioText(schoolList);
 }
 
+console.log(createMsg(67846));
 module.exports = createMsg;
