@@ -79,11 +79,17 @@ app.set('port', (process.env.PORT || 5000));
 console.log(msg('33028'));
 
 app.post('/sms', function(req, res) {
+  console.log(req.body);
   const twiml = new twilio.TwimlResponse();
   if(req.Body != null) {
     console.log(req.Body.toString());
     var text = msg(req.Body.toString());
     twiml.message(text);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+  }
+  else {
+    twiml.message('Error');
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
   }
