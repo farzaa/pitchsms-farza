@@ -27,8 +27,10 @@ app.listen(app.get('port'), function() {
 });
 
 app.post('/sms', function(request, response) {
+  var zip = request.body;
+  var msg = createMsg(zip);
   var twiml = new twilio.TwimlResponse();
-  twiml.message('The Robots are coming! Head for the hills!');
+  twiml.message(msg);
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
