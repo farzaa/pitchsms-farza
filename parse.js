@@ -5,7 +5,6 @@ var geolib = require('geolib')
 // Callback
 retrieveSchoolList('33028', function(list) {
   console.log(list);
-
 });
 
 
@@ -14,6 +13,8 @@ function retrieveSchoolList(zipKey, callback) {
   var lon = null;
   var schoolList = [];
 
+
+  // NOTE: There may some issues with node's async nature here if the above search is slow!
   // Check if the user input zip matches from the list of zips we have.
   for(var zip in zipcodes) {
     // We found a match! Extract the lat/lon now.
@@ -24,9 +25,13 @@ function retrieveSchoolList(zipKey, callback) {
     }
   }
 
-  // NOTE: There may some issues with node's async nature here if the above search is slow!
+  // That zip code couldn't be found from our master list.
+  if(lat == null || lon == null)
+    callback(schoolList)
+
   console.log(lat);
   console.log(lon);
+  
   // Cycle through list of schools
   for(var i = 0; i < schools.length; i++) {
 
