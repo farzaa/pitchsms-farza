@@ -1,5 +1,11 @@
 var express = require('express');
 var app = express();
+var list = require('./parse.js');
+
+var schools = list('67846', function(list) {
+  console.log(list);
+});
+
 
 var accountSid = 'ACf9c87a70f6df3afa949cd02fab0d2b5f'; // Your Account SID from www.twilio.com/console
 var authToken = '46f346035b4b588e0bbb6c20be3ca1de';   // Your Auth Token from www.twilio.com/console
