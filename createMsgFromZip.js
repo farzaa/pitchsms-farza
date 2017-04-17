@@ -59,4 +59,4 @@ var createMsg =  function retrieveSchoolList(zipKey) {
   }
 }
 
-module.exports = createMsg
+module.exports = createMsg;
