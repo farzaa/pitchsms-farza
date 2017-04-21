@@ -60,10 +60,11 @@ var createMsg =  function retrieveSchoolList(zipKey) {
                                               radius
       );
       // If its in the circle, lets add it to our list.
-      if(isInCircle){
+      if(isInCircle && !(schoolList.includes(inst))){
         schoolList.push(inst)
       }
     }
+    
     COUNTER_MULTIPLE++;
   }
   return toTwilioText(schoolList);

@@ -1,6 +1,6 @@
 var toTwilioText = function(list) {
   if(list.length >= 1) {
-    var baseMsg = "EsportsEDU schools around you!: "
+    var baseMsg = "EsportsEDU schools around you! "
     var newMsg = baseMsg;
     newMsg += list[0];
     for(var i = 1; i < list.length; i++) {
