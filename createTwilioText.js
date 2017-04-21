@@ -13,6 +13,7 @@ var toTwilioText = function(list) {
     }
     return newMsg;
   } else {
+    //
     return "Unfortunately there aren't any schools around your zip :(";
   }
 }
