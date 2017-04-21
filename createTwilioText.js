@@ -6,7 +6,7 @@ var toTwilioText = function(list) {
     for(var i = 1; i < list.length; i++) {
       newMsg += ", " + list[i];
     }
-    if(list.length >= 10) {
+    if(list.length > 10) {
       newMsg += ", and a few others!";
     } else {
       newMsg += "!";
