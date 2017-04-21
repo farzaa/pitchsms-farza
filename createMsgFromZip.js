@@ -32,17 +32,18 @@ var createMsg =  function retrieveSchoolList(zipKey) {
   console.log(lat);
   console.log(lon);
 
+  var MAX_RETURNED_SCHOOLS = 10;
   var COUNTER_MULTIPLE = 1;
   var RADIUS_BASE = 16100;
   var radius = RADIUS_BASE;
 
-  while(schoolList.length < 1 || COUNTER_MULTIPLE < 5) {
+  while(schoolList.length < 1 || COUNTER_MULTIPLE < MAX_RETURNED_SCHOOLS) {
     // Cycle through list of schools
     radius = RADIUS_BASE * COUNTER_MULTIPLE;
 
     for(var i = 0; i < schools.length; i++) {
 
-      if(schoolList.length >= 5)
+      if(schoolList.length >= MAX_RETURNED_SCHOOLS)
         break;
 
       // Callback when we have exhausted our list.
